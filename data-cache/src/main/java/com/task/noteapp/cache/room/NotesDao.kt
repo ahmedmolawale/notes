@@ -25,6 +25,6 @@ interface NotesDao {
     suspend fun updateANote(noteCacheModel: NoteCacheModel)
 
     @Query("DELETE FROM notes WHERE id = :noteId")
-    suspend fun deleteANote(noteId: String)
+    suspend fun deleteANote(noteId: Long)
 
 }

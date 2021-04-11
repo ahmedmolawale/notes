@@ -9,7 +9,7 @@ interface CacheModelMapper<Model, Entity> {
         return models.mapTo(mutableListOf(), ::mapToEntity)
     }
 
-    fun mapToDomainList(entities: List<Entity>): List<Model> {
+    fun mapToModelList(entities: List<Entity>): List<Model> {
         return entities.mapTo(mutableListOf(), ::mapToModel)
     }
 }

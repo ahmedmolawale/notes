@@ -1,15 +1,13 @@
 plugins {
     id 'java-library'
     id 'kotlin'
-    id("kotlin-kapt")
 }
 
 
 dependencies {
     implementation project(':domain')
 
-    implementation appDependencies.hilt
-    kapt appDependencies.hiltCompiler
+    implementation dataDependencies.javaxInject
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8.toString()

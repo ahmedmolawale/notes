@@ -35,7 +35,7 @@ class NoteCacheImpl @Inject constructor(
         notesDao.updateANote(noteCacheModel)
     }
 
-    override suspend fun deleteNote(noteId: String) {
+    override suspend fun deleteNote(noteId: Long) {
         notesDao.deleteANote(noteId)
     }
 }

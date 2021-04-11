@@ -20,7 +20,8 @@ ext {
             coroutines      : "1.4.2",
             coil            : "1.1.1",
             kotlin          : "1.4.10",
-            hilt            : "2.33-beta"
+            hilt            : "2.33-beta",
+            javaxInject     : "1"
     ]
 
     BuildPlugins = [
@@ -61,7 +62,8 @@ ext {
     dataDependencies = [
             roomRuntime : "androidx.room:room-runtime:$LibrariesVersion.room",
             roomCompiler: "androidx.room:room-compiler:$LibrariesVersion.room",
-            roomKtx     : "androidx.room:room-ktx:$LibrariesVersion.room"
+            roomKtx     : "androidx.room:room-ktx:$LibrariesVersion.room",
+            javaxInject : "javax.inject:javax.inject:$LibrariesVersion.javaxInject"
     ]
 
     domainDependencies = [

@@ -4,5 +4,5 @@ import com.task.noteapp.domain.model.Note
 import kotlinx.coroutines.flow.Flow
 
 interface NoteRepository {
-    suspend fun getNotes(): Flow<List<Note>>
+    fun getNotes(): Flow<List<Note>>
 }
