@@ -1,0 +1,20 @@
+plugins {
+    id 'java-library'
+    id 'kotlin'
+    id("kotlin-kapt")
+}
+
+
+dependencies {
+    implementation project(':domain')
+
+    implementation appDependencies.hilt
+    kapt appDependencies.hiltCompiler
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8.toString()
+targetCompatibility = JavaVersion.VERSION_1_8.toString()
+
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+}

@@ -83,3 +83,37 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+
+*.iml
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+/build
+/captures
+.cxx
+
+# OSX files
+.DS_Store
+
+# Eclipse project files
+.classpath
+.project
+
+# Android Studio
+.idea
+.gradle
+/*/local.properties
+/*/out
+/*/*/build
+build
+/*/*/production
+*.iws
+*.ipr
+*~
+*.swp
+
+
