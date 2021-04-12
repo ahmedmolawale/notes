@@ -13,18 +13,18 @@ import kotlinx.coroutines.flow.Flow
 interface NotesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertNote(noteCacheModel: NoteCacheModel)
+    suspend fun insertNote(noteCacheModel: NoteCacheModel): Long
 
     @Query("SELECT * FROM notes")
     fun fetchNotes(): Flow<List<NoteCacheModel>>
 
     @Query("SELECT * FROM notes WHERE id = :noteId")
-    suspend fun fetchANote(noteId: String): NoteCacheModel?
+    suspend fun fetchANote(noteId: Long): NoteCacheModel?
 
     @Update
-    suspend fun updateANote(noteCacheModel: NoteCacheModel)
+    suspend fun updateANote(noteCacheModel: NoteCacheModel): Int
 
     @Query("DELETE FROM notes WHERE id = :noteId")
-    suspend fun deleteANote(noteId: Long)
+    suspend fun deleteANote(noteId: Long): Int
 
 }

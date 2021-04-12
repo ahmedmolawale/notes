@@ -16,11 +16,11 @@ class NoteCacheImpl @Inject constructor(
 ) : NoteCache {
 
 
-    override suspend fun saveNote(noteEntity: NoteEntity) {
+    override suspend fun saveNote(noteEntity: NoteEntity): Long {
         val noteCacheModel: NoteCacheModel = noteCacheModelMapper.mapToModel(noteEntity)
         noteCacheModel.createdAt = Date()
         noteCacheModel.edited = false
-        notesDao.insertNote(noteCacheModel)
+        return notesDao.insertNote(noteCacheModel)
     }
 
     override fun fetchNotes(): Flow<List<NoteEntity>> {
@@ -29,13 +29,20 @@ class NoteCacheImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateNote(noteEntity: NoteEntity) {
+    override suspend fun updateNote(noteEntity: NoteEntity): Int {
         val noteCacheModel: NoteCacheModel = noteCacheModelMapper.mapToModel(noteEntity)
         noteCacheModel.edited = true
-        notesDao.updateANote(noteCacheModel)
+        return notesDao.updateANote(noteCacheModel)
     }
 
-    override suspend fun deleteNote(noteId: Long) {
-        notesDao.deleteANote(noteId)
+    override suspend fun deleteNote(noteId: Long): Int {
+        return notesDao.deleteANote(noteId)
+    }
+
+    override suspend fun fetchNote(noteId: Long): NoteEntity? {
+        val noteCacheModel: NoteCacheModel? = notesDao.fetchANote(noteId)
+        return noteCacheModel?.let {
+            noteCacheModelMapper.mapToEntity(noteCacheModel)
+        }
     }
 }

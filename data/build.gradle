@@ -8,6 +8,10 @@ dependencies {
     implementation project(':domain')
 
     implementation dataDependencies.javaxInject
+
+    testImplementation TestLibraries.junit
+    testImplementation TestLibraries.coroutines
+    testImplementation TestLibraries.truth
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8.toString()

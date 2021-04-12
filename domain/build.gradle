@@ -6,6 +6,8 @@ plugins {
 dependencies {
     api domainDependencies.kotlin
     api domainDependencies.coroutinesCore
+
+    implementation dataDependencies.javaxInject
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8.toString()

@@ -68,7 +68,9 @@ ext {
 
     domainDependencies = [
             kotlin        : "org.jetbrains.kotlin:kotlin-stdlib:$LibrariesVersion.kotlin",
-            coroutinesCore: "org.jetbrains.kotlinx:kotlinx-coroutines-core:$LibrariesVersion.coroutines"
+            coroutinesCore: "org.jetbrains.kotlinx:kotlinx-coroutines-core:$LibrariesVersion.coroutines",
+            javaxInject : "javax.inject:javax.inject:$LibrariesVersion.javaxInject"
+
     ]
 
 
