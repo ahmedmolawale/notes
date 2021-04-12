@@ -10,7 +10,7 @@ import javax.inject.Inject
 class UpdateNote @Inject constructor(
     private val noteRepository: NoteRepository
 ) : FlowUseCase<Note, Note> {
-    override fun invoke(params: Note): Flow<Result<Note>> {
-        return noteRepository.updateNote(params)
+    override fun invoke(params: Note?): Flow<Result<Note>> {
+        return noteRepository.updateNote(params!!)
     }
 }

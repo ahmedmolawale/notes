@@ -3,4 +3,9 @@
     <string name="note_saved">Note saved successfully.</string>
     <string name="note_save_error">Unable to save note. Try again</string>
     <string name="no_title_description">Title and Description cannot be empty</string>
+    <string name="error_on_notes">Unable to get notes.</string>
+    <string name="note_not_exist">Note does not exist</string>
+    <string name="error_on_note">Error on fetching data</string>
+    <string name="note_update">Note updated successfully.</string>
+    <string name="note_delete">Note deleted successfully.</string>
 </resources>

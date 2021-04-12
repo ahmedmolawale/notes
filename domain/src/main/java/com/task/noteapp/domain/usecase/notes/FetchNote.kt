@@ -10,7 +10,7 @@ import javax.inject.Inject
 class FetchNote @Inject constructor(
     private val noteRepository: NoteRepository
 ) : FlowUseCase<Long, Note> {
-    override fun invoke(params: Long): Flow<Result<Note>> {
-        return noteRepository.fetchNote(params)
+    override fun invoke(params: Long?): Flow<Result<Note>> {
+        return noteRepository.fetchNote(params!!)
     }
 }

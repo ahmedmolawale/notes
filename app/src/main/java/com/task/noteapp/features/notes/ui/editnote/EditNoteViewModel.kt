@@ -4,61 +4,111 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.task.noteapp.R
 import com.task.noteapp.domain.exception.Failure
 import com.task.noteapp.domain.functional.Result
 import com.task.noteapp.domain.model.Note
 import com.task.noteapp.domain.usecase.notes.DeleteNote
 import com.task.noteapp.domain.usecase.notes.FetchNote
-import com.task.noteapp.domain.usecase.notes.SaveNote
 import com.task.noteapp.domain.usecase.notes.UpdateNote
 import com.task.noteapp.features.notes.mapper.NotePresentationMapper
 import com.task.noteapp.features.notes.model.NotePresentation
-import com.task.noteapp.features.notes.model.states.NoteListView
+import com.task.noteapp.features.notes.model.states.NoteEditView
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class EditNoteViewModel @Inject constructor(
-    private val saveNote: SaveNote,
     private val updateNote: UpdateNote,
     private val deleteNote: DeleteNote,
     private val fetchNote: FetchNote,
     private val notePresentationMapper: NotePresentationMapper
 ) : ViewModel() {
 
-    private val _noteListView = MutableLiveData<NoteListView>()
-    val noteListView: LiveData<NoteListView>
-        get() = _noteListView
+    private val _noteEditView = MutableLiveData<NoteEditView>()
+    val noteEditView: LiveData<NoteEditView>
+        get() = _noteEditView
 
-    fun fetchNotes() {
+    fun getNote(noteId: Long) {
         viewModelScope.launch {
-            _noteListView.postValue(NoteListView(loading = true))
-            getNotes().collect {
-                _noteListView.postValue(NoteListView(loading = false))
+            _noteEditView.postValue(NoteEditView(loading = true))
+            fetchNote(noteId).collect {
+                _noteEditView.postValue(NoteEditView(loading = false))
                 when (it) {
                     is Result.Success -> {
-                        handleNotesSuccess(it.data)
+                        handleNoteSuccess(it.data)
                     }
                     is Result.Error -> {
-                        handleNotesError(it.failure)
+                        handleNoteEditError(it.failure)
                     }
                 }
             }
         }
     }
 
-    private fun handleNotesSuccess(notes: List<Note>) {
-        if (notes.isEmpty()) {
-            _noteListView.postValue(NoteListView(isEmpty = true))
-        } else {
-            val notePresentationList: List<NotePresentation> =
-                notes.map(notePresentationMapper::mapToPresentation)
-            _noteListView.postValue(NoteListView(notes = notePresentationList))
+    private fun handleNoteSuccess(note: Note) {
+        _noteEditView.postValue(
+            NoteEditView(
+                note = notePresentationMapper.mapToPresentation(
+                    note
+                )
+            )
+        )
+    }
+
+    private fun handleNoteEditError(failure: Failure) {
+        when (failure) {
+            is Failure.NoteNotFound -> {
+                _noteEditView.value = NoteEditView(message = R.string.note_not_exist)
+            }
+            else -> {
+                _noteEditView.value = NoteEditView(message = R.string.error_on_note)
+            }
         }
     }
 
-    private fun handleNotesError(failure: Failure) {
-        _noteListView.postValue(NoteListView(errorMessage = "Unable to get notes"))
+    fun updateANote(notePresentation: NotePresentation) {
+        viewModelScope.launch {
+            _noteEditView.postValue(NoteEditView(loading = true))
+            val note = notePresentationMapper.mapToDomain(notePresentation)
+            updateNote(note).collect {
+                _noteEditView.postValue(NoteEditView(loading = false))
+                when (it) {
+                    is Result.Success -> {
+                        handleNoteUpdateSuccess()
+                    }
+                    is Result.Error -> {
+                        handleNoteEditError(it.failure)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun handleNoteUpdateSuccess() {
+        _noteEditView.value = NoteEditView(message = R.string.note_update)
+    }
+
+    fun deleteANote(noteId: Long) {
+        viewModelScope.launch {
+            _noteEditView.postValue(NoteEditView(loading = true))
+            deleteNote(noteId).collect {
+                _noteEditView.postValue(NoteEditView(loading = false))
+                when (it) {
+                    is Result.Success -> {
+                        handleNoteDeleteSuccess()
+                    }
+                    is Result.Error -> {
+                        handleNoteEditError(it.failure)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun handleNoteDeleteSuccess() {
+        _noteEditView.value = NoteEditView(message = R.string.note_delete)
     }
 }

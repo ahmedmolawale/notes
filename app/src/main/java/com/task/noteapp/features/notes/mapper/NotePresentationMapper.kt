@@ -5,8 +5,9 @@ import com.task.noteapp.features.notes.mapper.base.PresentationMapper
 import com.task.noteapp.features.notes.model.NotePresentation
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-class NotePresentationMapper : PresentationMapper<Note, NotePresentation> {
+class NotePresentationMapper @Inject constructor(): PresentationMapper<Note, NotePresentation> {
     override fun mapToPresentation(domain: Note): NotePresentation {
         return NotePresentation(
             id = domain.id,
@@ -23,11 +24,11 @@ class NotePresentationMapper : PresentationMapper<Note, NotePresentation> {
 
     override fun mapToDomain(presentation: NotePresentation): Note {
         return Note(
-            id = presentation.id ?: 0,
+            id = presentation.id,
             title = presentation.title,
             description = presentation.description,
             imageUrl = presentation.imageUrl,
-            edited = presentation.isEdited ?: false,
+            edited = presentation.isEdited,
             createdAt = Date()
         )
     }

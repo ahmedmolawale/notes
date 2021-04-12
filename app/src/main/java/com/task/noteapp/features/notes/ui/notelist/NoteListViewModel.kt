@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.task.noteapp.R
 import com.task.noteapp.domain.exception.Failure
 import com.task.noteapp.domain.functional.Result
 import com.task.noteapp.domain.model.Note
@@ -54,6 +55,6 @@ class NoteListViewModel @Inject constructor(
     }
 
     private fun handleNotesError(failure: Failure) {
-        _noteListView.postValue(NoteListView(errorMessage = "Unable to get notes"))
+        _noteListView.postValue(NoteListView(errorMessage = R.string.error_on_notes))
     }
 }

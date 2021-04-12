@@ -23,7 +23,6 @@ class AddNoteViewModel @Inject constructor(
     private val notePresentationMapper: NotePresentationMapper
 ) : ViewModel() {
 
-
     // Two-way databinding, exposing MutableLiveData
     val title = MutableLiveData<String>()
 
@@ -47,11 +46,11 @@ class AddNoteViewModel @Inject constructor(
             saveNote(note).collect {
                 _savingNote.postValue(Event(false))
                 when (it) {
-                    is Result.Success -> {
-                        handleNoteSaveSuccess()
-                    }
                     is Result.Error -> {
                         handleNoteSaveError(it.failure)
+                    }
+                    is Result.Success -> {
+                        handleNoteSaveSuccess()
                     }
                 }
             }
@@ -66,7 +65,7 @@ class AddNoteViewModel @Inject constructor(
         _snackbarText.value = Event(R.string.note_save_error)
     }
 
-    //called via databinding from the layout
+    //called via data-binding from the layout
     fun saveNote() {
         val currentTitle = title.value
         val currentDescription = description.value

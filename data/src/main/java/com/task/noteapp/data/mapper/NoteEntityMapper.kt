@@ -3,8 +3,9 @@ package com.task.noteapp.data.mapper
 import com.task.noteapp.data.mapper.base.EntityMapper
 import com.task.noteapp.data.model.NoteEntity
 import com.task.noteapp.domain.model.Note
+import javax.inject.Inject
 
-class NoteEntityMapper : EntityMapper<NoteEntity, Note> {
+class NoteEntityMapper @Inject constructor() : EntityMapper<NoteEntity, Note> {
 
     override fun mapToDomain(entity: NoteEntity): Note {
         return Note(

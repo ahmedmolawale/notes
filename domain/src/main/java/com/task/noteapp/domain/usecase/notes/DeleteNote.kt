@@ -9,7 +9,7 @@ import javax.inject.Inject
 class DeleteNote @Inject constructor(
     private val noteRepository: NoteRepository
 ) : FlowUseCase<Long, Long> {
-    override fun invoke(params: Long): Flow<Result<Long>> {
-        return noteRepository.deleteNote(params)
+    override fun invoke(params: Long?): Flow<Result<Long>> {
+        return noteRepository.deleteNote(params!!)
     }
 }
