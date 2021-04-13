@@ -4,6 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.task.noteapp.R
 import com.task.noteapp.domain.usecase.notes.SaveNote
+import com.task.noteapp.domain.usecase.notes.UpdateNote
+import com.task.noteapp.features.notes.data.DummyData
 import com.task.noteapp.features.notes.fakes.FakeNoteRepository
 import com.task.noteapp.features.notes.mapper.NotePresentationMapper
 import com.task.noteapp.features.utils.MainCoroutineRule
@@ -32,7 +34,7 @@ class AddNoteViewModelTest {
     }
 
     @Test
-    fun `check that saveNotes fails when title is not available`() {
+    fun `check that saveNote fails when title is not available`() {
         addNoteViewModel.title.value = ""
         addNoteViewModel.saveNote()
         val res = addNoteViewModel.snackbarText.getOrAwaitValueTest()
@@ -41,7 +43,7 @@ class AddNoteViewModelTest {
     }
 
     @Test
-    fun `check that saveNotes fails when description is not available`() {
+    fun `check that saveNote fails when description is not available`() {
         addNoteViewModel.description.value = ""
         addNoteViewModel.saveNote()
         val res = addNoteViewModel.snackbarText.getOrAwaitValueTest()
@@ -50,7 +52,7 @@ class AddNoteViewModelTest {
     }
 
     @Test
-    fun `check that saveNotes saves data`() {
+    fun `check that saveNote saves data`() {
         addNoteViewModel.title.value = "Tell me"
         addNoteViewModel.description.value = "I am a whole bunch"
         fakeNoteRepository.noteResponseType = ResponseType.DATA
@@ -62,7 +64,7 @@ class AddNoteViewModelTest {
     }
 
     @Test
-    fun `check that saveNotes show error when unable to save note`() {
+    fun `check that saveNote show error when unable to save note`() {
         addNoteViewModel.title.value = "Tell me"
         addNoteViewModel.description.value = "I am a whole bunch"
         fakeNoteRepository.noteResponseType = ResponseType.ERROR

@@ -3,10 +3,7 @@ package com.task.noteapp.features.notes.ui.editnote
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.task.noteapp.R
-import com.task.noteapp.domain.usecase.notes.DeleteNote
-import com.task.noteapp.domain.usecase.notes.FetchNote
 import com.task.noteapp.domain.usecase.notes.UpdateNote
-import com.task.noteapp.features.notes.data.DummyData
 import com.task.noteapp.features.notes.fakes.FakeNoteRepository
 import com.task.noteapp.features.notes.mapper.NotePresentationMapper
 import com.task.noteapp.features.utils.MainCoroutineRule
@@ -17,7 +14,6 @@ import org.junit.Rule
 import org.junit.Test
 
 class EditNoteViewModelTest {
-
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
@@ -32,101 +28,93 @@ class EditNoteViewModelTest {
     fun setup() {
         fakeNoteRepository = FakeNoteRepository()
         notePresentationMapper = NotePresentationMapper()
-        editNoteViewModel =
-            EditNoteViewModel(
-                UpdateNote(fakeNoteRepository),
-                DeleteNote(fakeNoteRepository),
-                FetchNote(fakeNoteRepository),
-                notePresentationMapper
-            )
+        editNoteViewModel = EditNoteViewModel(
+            UpdateNote(fakeNoteRepository),
+            notePresentationMapper
+        )
     }
 
     @Test
-    fun `check that fetchNote returns the correct data`() {
+    fun `check that updateNote fails when title is not available`() {
+        editNoteViewModel.title.value = ""
+        editNoteViewModel.updateNote()
+        val res = editNoteViewModel.noteView.getOrAwaitValueTest()
+        assertThat(res).isNotNull()
+        assertThat(res.message).isEqualTo(R.string.no_title_description)
+    }
+
+    @Test
+    fun `check that updateNote fails when description is not available`() {
+        editNoteViewModel.description.value = ""
+        editNoteViewModel.updateNote()
+        val res = editNoteViewModel.noteView.getOrAwaitValueTest()
+        assertThat(res).isNotNull()
+        assertThat(res.message).isEqualTo(R.string.no_title_description)
+    }
+
+    @Test
+    fun `check that updateNote updates note`() {
+        editNoteViewModel.title.value = "Tell me"
+        editNoteViewModel.description.value = "I am a whole bunch"
         fakeNoteRepository.noteResponseType = ResponseType.DATA
-        editNoteViewModel.getNote(DummyData.note.id)
 
-        val res = editNoteViewModel.noteEditView.getOrAwaitValueTest()
-        assertThat(res.note).isNotNull()
-        assertThat(res.note).isEqualTo(notePresentationMapper.mapToPresentation(DummyData.note))
-    }
-
-    @Test
-    fun `check that fetchNote returns not exist when note does not exist`() {
-        fakeNoteRepository.noteResponseType = ResponseType.RESOURCE_NOT_FOUND
-        editNoteViewModel.getNote(DummyData.note.id)
-
-        val res = editNoteViewModel.noteEditView.getOrAwaitValueTest()
-        assertThat(res.note).isNull()
-        assertThat(res.message).isEqualTo(R.string.note_not_exist)
-    }
-
-    @Test
-    fun `check that fetchNote returns error if error happens`() {
-        fakeNoteRepository.noteResponseType = ResponseType.ERROR
-        editNoteViewModel.getNote(DummyData.note.id)
-
-        val res = editNoteViewModel.noteEditView.getOrAwaitValueTest()
-        assertThat(res.note).isNull()
-        assertThat(res.message).isEqualTo(R.string.error_on_note)
-    }
-
-    @Test
-    fun `check that updateNote returns the correct data`() {
-        fakeNoteRepository.noteResponseType = ResponseType.DATA
-        editNoteViewModel.updateANote(DummyData.notePresentation)
-
-        val res = editNoteViewModel.noteEditView.getOrAwaitValueTest()
+        editNoteViewModel.updateNote()
+        val res = editNoteViewModel.noteView.getOrAwaitValueTest()
+        assertThat(res).isNotNull()
         assertThat(res.message).isEqualTo(R.string.note_update)
     }
 
     @Test
     fun `check that updateNote returns not exist when note does not exist`() {
+        editNoteViewModel.title.value = "Tell me"
+        editNoteViewModel.description.value = "I am a whole bunch"
         fakeNoteRepository.noteResponseType = ResponseType.RESOURCE_NOT_FOUND
-        editNoteViewModel.updateANote(DummyData.notePresentation)
+        editNoteViewModel.updateNote()
 
-        val res = editNoteViewModel.noteEditView.getOrAwaitValueTest()
+        val res = editNoteViewModel.noteView.getOrAwaitValueTest()
         assertThat(res.note).isNull()
         assertThat(res.message).isEqualTo(R.string.note_not_exist)
     }
 
     @Test
-    fun `check that updateNote returns error if error happens`() {
+    fun `check that updateNotes show error when unable to save note`() {
+        editNoteViewModel.title.value = "Tell me"
+        editNoteViewModel.description.value = "I am a whole bunch"
         fakeNoteRepository.noteResponseType = ResponseType.ERROR
-        editNoteViewModel.updateANote(DummyData.notePresentation)
 
-        val res = editNoteViewModel.noteEditView.getOrAwaitValueTest()
-        assertThat(res.note).isNull()
+        editNoteViewModel.updateNote()
+        val res = editNoteViewModel.noteView.getOrAwaitValueTest()
+        assertThat(res).isNotNull()
         assertThat(res.message).isEqualTo(R.string.error_on_note)
     }
 
-    @Test
-    fun `check that deleteNote returns the correct data`() {
-        fakeNoteRepository.longResponseType = ResponseType.DATA
-        editNoteViewModel.deleteANote(DummyData.note.id)
-
-        val res = editNoteViewModel.noteEditView.getOrAwaitValueTest()
-        assertThat(res.message).isEqualTo(R.string.note_delete)
-    }
-
-    @Test
-    fun `check that deleteNote returns not exist when note does not exist`() {
-        fakeNoteRepository.longResponseType = ResponseType.RESOURCE_NOT_FOUND
-        editNoteViewModel.deleteANote(DummyData.note.id)
-
-        val res = editNoteViewModel.noteEditView.getOrAwaitValueTest()
-        assertThat(res.note).isNull()
-        assertThat(res.message).isEqualTo(R.string.note_not_exist)
-    }
-
-    @Test
-    fun `check that deleteNote returns error if error happens`() {
-        fakeNoteRepository.longResponseType = ResponseType.ERROR
-        editNoteViewModel.deleteANote(DummyData.note.id)
-
-        val res = editNoteViewModel.noteEditView.getOrAwaitValueTest()
-        assertThat(res.note).isNull()
-        assertThat(res.message).isEqualTo(R.string.error_on_note)
-    }
-
+//    //for updating note
+//    @Test
+//    fun `check that updateNote returns the correct data`() {
+//        fakeNoteRepository.noteResponseType = ResponseType.DATA
+//        addNoteViewModel.updateANote(DummyData.notePresentation)
+//
+//        val res = addNoteViewModel.noteView.getOrAwaitValueTest()
+//        assertThat(res.message).isEqualTo(R.string.note_update)
+//    }
+//
+//    @Test
+//    fun `check that updateNote returns not exist when note does not exist`() {
+//        fakeNoteRepository.noteResponseType = ResponseType.RESOURCE_NOT_FOUND
+//        addNoteViewModel.updateANote(DummyData.notePresentation)
+//
+//        val res = addNoteViewModel.noteView.getOrAwaitValueTest()
+//        assertThat(res.note).isNull()
+//        assertThat(res.message).isEqualTo(R.string.note_not_exist)
+//    }
+//
+//    @Test
+//    fun `check that updateNote returns error if error happens`() {
+//        fakeNoteRepository.noteResponseType = ResponseType.ERROR
+//        addNoteViewModel.updateANote(DummyData.notePresentation)
+//
+//        val res = addNoteViewModel.noteView.getOrAwaitValueTest()
+//        assertThat(res.note).isNull()
+//        assertThat(res.message).isEqualTo(R.string.error_on_note)
+//    }
 }

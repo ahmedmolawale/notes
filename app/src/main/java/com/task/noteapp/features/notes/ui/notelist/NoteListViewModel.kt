@@ -12,6 +12,7 @@ import com.task.noteapp.domain.usecase.notes.GetNotes
 import com.task.noteapp.features.notes.mapper.NotePresentationMapper
 import com.task.noteapp.features.notes.model.NotePresentation
 import com.task.noteapp.features.notes.model.states.NoteListView
+import com.task.noteapp.features.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -27,6 +28,9 @@ class NoteListViewModel @Inject constructor(
     private val _noteListView = MutableLiveData<NoteListView>()
     val noteListView: LiveData<NoteListView>
         get() = _noteListView
+
+    private val _newNoteEvent = MutableLiveData<Event<Unit>>()
+    val newNoteEvent: LiveData<Event<Unit>> = _newNoteEvent
 
     fun fetchNotes() {
         viewModelScope.launch {
@@ -56,5 +60,11 @@ class NoteListViewModel @Inject constructor(
 
     private fun handleNotesError(failure: Failure) {
         _noteListView.postValue(NoteListView(errorMessage = R.string.error_on_notes))
+    }
+    /**
+     * Called via Data Binding through FAB click listener.
+     */
+    fun addNewNote(){
+        _newNoteEvent.value = Event(Unit)
     }
 }

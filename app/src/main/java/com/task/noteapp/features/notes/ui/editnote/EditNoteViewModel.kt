@@ -7,13 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.task.noteapp.R
 import com.task.noteapp.domain.exception.Failure
 import com.task.noteapp.domain.functional.Result
-import com.task.noteapp.domain.model.Note
-import com.task.noteapp.domain.usecase.notes.DeleteNote
-import com.task.noteapp.domain.usecase.notes.FetchNote
 import com.task.noteapp.domain.usecase.notes.UpdateNote
 import com.task.noteapp.features.notes.mapper.NotePresentationMapper
 import com.task.noteapp.features.notes.model.NotePresentation
-import com.task.noteapp.features.notes.model.states.NoteEditView
+import com.task.noteapp.features.notes.model.states.NoteView
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -22,93 +19,79 @@ import javax.inject.Inject
 @HiltViewModel
 class EditNoteViewModel @Inject constructor(
     private val updateNote: UpdateNote,
-    private val deleteNote: DeleteNote,
-    private val fetchNote: FetchNote,
     private val notePresentationMapper: NotePresentationMapper
 ) : ViewModel() {
 
-    private val _noteEditView = MutableLiveData<NoteEditView>()
-    val noteEditView: LiveData<NoteEditView>
-        get() = _noteEditView
+    // Two-way databinding, exposing MutableLiveData
+    val title = MutableLiveData<String>()
 
-    fun getNote(noteId: Long) {
-        viewModelScope.launch {
-            _noteEditView.postValue(NoteEditView(loading = true))
-            fetchNote(noteId).collect {
-                _noteEditView.postValue(NoteEditView(loading = false))
-                when (it) {
-                    is Result.Success -> {
-                        handleNoteSuccess(it.data)
-                    }
-                    is Result.Error -> {
-                        handleNoteEditError(it.failure)
-                    }
-                }
-            }
+    // Two-way databinding, exposing MutableLiveData
+    val description = MutableLiveData<String>()
+
+    // Two-way databinding, exposing MutableLiveData
+    val imageUrl = MutableLiveData<String>()
+
+
+    private val _noteView = MutableLiveData<NoteView>()
+    val noteView: LiveData<NoteView>
+        get() = _noteView
+
+
+    //called via data-binding from the layout
+    fun updateNote() {
+        val currentTitle = title.value
+        val currentDescription = description.value
+        val currentImageUrl = imageUrl.value
+
+        if (currentTitle.isNullOrBlank() || currentDescription.isNullOrBlank()) {
+            _noteView.value = NoteView(message = R.string.no_title_description)
+            return
         }
-    }
-
-    private fun handleNoteSuccess(note: Note) {
-        _noteEditView.postValue(
-            NoteEditView(
-                note = notePresentationMapper.mapToPresentation(
-                    note
-                )
-            )
+        val notePresentation = NotePresentation(
+            title = currentTitle,
+            description = currentDescription,
+            imageUrl = currentImageUrl ?: ""
         )
+        print("Updating...")
+        updateANote(notePresentation)
     }
 
-    private fun handleNoteEditError(failure: Failure) {
-        when (failure) {
-            is Failure.NoteNotFound -> {
-                _noteEditView.value = NoteEditView(message = R.string.note_not_exist)
-            }
-            else -> {
-                _noteEditView.value = NoteEditView(message = R.string.error_on_note)
-            }
-        }
-    }
-
-    fun updateANote(notePresentation: NotePresentation) {
+    private fun updateANote(notePresentation: NotePresentation) {
         viewModelScope.launch {
-            _noteEditView.postValue(NoteEditView(loading = true))
+            _noteView.postValue(NoteView(loading = true))
             val note = notePresentationMapper.mapToDomain(notePresentation)
             updateNote(note).collect {
-                _noteEditView.postValue(NoteEditView(loading = false))
+                _noteView.postValue(NoteView(loading = false))
                 when (it) {
                     is Result.Success -> {
                         handleNoteUpdateSuccess()
                     }
                     is Result.Error -> {
-                        handleNoteEditError(it.failure)
+                        handleNoteUpdateError(it.failure)
                     }
                 }
+            }
+        }
+    }
+
+    private fun handleNoteUpdateError(failure: Failure) {
+        when (failure) {
+            is Failure.NoteNotFound -> {
+                _noteView.value = NoteView(message = R.string.note_not_exist)
+            }
+            else -> {
+                _noteView.value = NoteView(message = R.string.error_on_note)
             }
         }
     }
 
     private fun handleNoteUpdateSuccess() {
-        _noteEditView.value = NoteEditView(message = R.string.note_update)
+        _noteView.value = NoteView(message = R.string.note_update)
     }
 
-    fun deleteANote(noteId: Long) {
-        viewModelScope.launch {
-            _noteEditView.postValue(NoteEditView(loading = true))
-            deleteNote(noteId).collect {
-                _noteEditView.postValue(NoteEditView(loading = false))
-                when (it) {
-                    is Result.Success -> {
-                        handleNoteDeleteSuccess()
-                    }
-                    is Result.Error -> {
-                        handleNoteEditError(it.failure)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun handleNoteDeleteSuccess() {
-        _noteEditView.value = NoteEditView(message = R.string.note_delete)
+    fun setNote(note: NotePresentation) {
+        title.value = note.title
+        description.value = note.description
+        imageUrl.value = note.imageUrl
     }
 }

@@ -7,21 +7,23 @@ ext {
     ]
 
     LibrariesVersion = [
-            appCompat       : "1.2.0",
-            fragmentKtx     : "1.2.5",
-            materialDesign  : "1.3.0",
-            androidCore     : "1.3.2",
-            constraintLayout: "2.0.4",
-            okHTTPLogger    : "4.9.0",
-            retrofit        : "2.9.0",
-            shimmer         : "0.5.0",
-            room            : "2.2.6",
-            moshiConverter  : "2.9.0",
-            coroutines      : "1.4.2",
-            coil            : "1.1.1",
-            kotlin          : "1.4.10",
-            hilt            : "2.33-beta",
-            javaxInject     : "1"
+            appCompat          : "1.2.0",
+            fragmentKtx        : "1.2.5",
+            materialDesign     : "1.3.0",
+            androidCore        : "1.3.2",
+            constraintLayout   : "2.0.4",
+            okHTTPLogger       : "4.9.0",
+            retrofit           : "2.9.0",
+            shimmer            : "0.5.0",
+            room               : "2.2.6",
+            moshiConverter     : "2.9.0",
+            coroutines         : "1.4.2",
+            coil               : "1.1.1",
+            kotlin             : "1.4.10",
+            hilt               : "2.33-beta",
+            javaxInject        : "1",
+            swipeRefereshLayout: "1.1.0",
+            navigation         : "2.3.5"
     ]
 
     BuildPlugins = [
@@ -34,29 +36,33 @@ ext {
             kotlinKapt         : "kotlin-kapt",
             daggerHilt         : "dagger.hilt.android.plugin",
             kotlinParcelize    : "kotlin-parcelize",
+            navigationSafeArgsPlugin    : "androidx.navigation:navigation-safe-args-gradle-plugin:$LibrariesVersion.navigation",
             jacocoCorePlugin   : "org.jacoco:org.jacoco.core:0.8.4"
 
     ]
 
 
     AndroidClient = [
-            appId      : "com.ahmedmolawale.starwars",
+            appId      : "com.ahmedmolawale.noteapp",
             versionCode: 1,
             versionName: "1.0"
     ]
 
 
     appDependencies = [
-            hilt             : "com.google.dagger:hilt-android:$LibrariesVersion.hilt",
-            hiltCompiler     : "com.google.dagger:hilt-android-compiler:$LibrariesVersion.hilt",
-            appCompat        : "androidx.appcompat:appcompat:$LibrariesVersion.appCompat",
-            fragmentKTX      : "androidx.fragment:fragment-ktx:$LibrariesVersion.fragmentKtx",
-            androidCore      : "androidx.core:core-ktx:$LibrariesVersion.androidCore",
-            materialDesign   : "com.google.android.material:material:$LibrariesVersion.materialDesign",
-            constraintLayout : "androidx.constraintlayout:constraintlayout:$LibrariesVersion.constraintLayout",
-            shimmer          : "com.facebook.shimmer:shimmer:$LibrariesVersion.shimmer",
-            coil             : "io.coil-kt:coil:$LibrariesVersion.coil",
-            coroutinesAndroid: "org.jetbrains.kotlinx:kotlinx-coroutines-android:$LibrariesVersion.coroutines",
+            hilt                 : "com.google.dagger:hilt-android:$LibrariesVersion.hilt",
+            hiltCompiler         : "com.google.dagger:hilt-android-compiler:$LibrariesVersion.hilt",
+            appCompat            : "androidx.appcompat:appcompat:$LibrariesVersion.appCompat",
+            fragmentKTX          : "androidx.fragment:fragment-ktx:$LibrariesVersion.fragmentKtx",
+            navigationFragmentKTX: "androidx.navigation:navigation-fragment-ktx:$LibrariesVersion.navigation",
+            navigationUIKTX      : "androidx.navigation:navigation-ui-ktx:$LibrariesVersion.navigation",
+            androidCore          : "androidx.core:core-ktx:$LibrariesVersion.androidCore",
+            materialDesign       : "com.google.android.material:material:$LibrariesVersion.materialDesign",
+            constraintLayout     : "androidx.constraintlayout:constraintlayout:$LibrariesVersion.constraintLayout",
+            shimmer              : "com.facebook.shimmer:shimmer:$LibrariesVersion.shimmer",
+            coil                 : "io.coil-kt:coil:$LibrariesVersion.coil",
+            swipeRefereshLayout  : "androidx.swiperefreshlayout:swiperefreshlayout:$LibrariesVersion.swipeRefereshLayout",
+            coroutinesAndroid    : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$LibrariesVersion.coroutines",
     ]
 
     dataDependencies = [
@@ -69,7 +75,7 @@ ext {
     domainDependencies = [
             kotlin        : "org.jetbrains.kotlin:kotlin-stdlib:$LibrariesVersion.kotlin",
             coroutinesCore: "org.jetbrains.kotlinx:kotlinx-coroutines-core:$LibrariesVersion.coroutines",
-            javaxInject : "javax.inject:javax.inject:$LibrariesVersion.javaxInject"
+            javaxInject   : "javax.inject:javax.inject:$LibrariesVersion.javaxInject"
 
     ]
 

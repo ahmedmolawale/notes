@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewmodel"
+            type="com.task.noteapp.features.notes.ui.addnote.AddNoteViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin">
+
+                <EditText
+                    android:id="@+id/add_note_title_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/input_bg"
+                    android:fontFamily="@font/circularstdbold"
+                    android:hint="@string/title_hint"
+                    android:imeOptions="flagNoExtractUi"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:text="@={viewmodel.title}"
+                    android:textColor="@color/light_grey"
+                    android:textColorHint="@color/light_grey"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/add_note_image_url_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/input_bg"
+                    android:fontFamily="@font/circularstdbook"
+                    android:hint="@string/image_url_hint"
+                    android:imeOptions="flagNoExtractUi"
+                    android:inputType="textUri"
+                    android:maxLines="1"
+                    android:text="@={viewmodel.imageUrl}"
+                    android:textColor="@color/light_grey"
+                    android:textColorHint="@color/light_grey"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/add_note_title_edit_text" />
+
+
+                <EditText
+                    android:id="@+id/add_note_description_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/input_bg"
+                    android:fontFamily="@font/circularstdbook"
+                    android:gravity="top"
+                    android:hint="@string/description_hint"
+                    android:imeOptions="flagNoExtractUi"
+                    android:text="@={viewmodel.description}"
+                    android:textColor="@color/light_grey"
+                    android:textColorHint="@color/light_grey"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/add_note_image_url_edit_text" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/save_note_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:onClick="@{() -> viewmodel.saveNote()}"
+            android:src="@drawable/ic_done"
+            app:fabSize="normal"
+            app:layout_anchor="@id/main_content"
+            app:layout_anchorGravity="bottom|right|end" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

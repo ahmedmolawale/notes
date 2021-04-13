@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/noteFragment">
+
+    <fragment
+        android:id="@+id/noteFragment"
+        android:name="com.task.noteapp.features.notes.ui.notelist.NoteListFragment"
+        android:label="Notes"
+        tools:layout="@layout/note_fragment">
+        <action
+            android:id="@+id/action_noteFragment_to_addNoteFragment"
+            app:destination="@id/addNoteFragment" />
+        <action
+            android:id="@+id/action_noteFragment_to_noteDetailFragment"
+            app:destination="@id/noteDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/noteDetailFragment"
+        android:name="com.task.noteapp.features.notes.ui.notedetail.NoteDetailFragment"
+        android:label="Note Details"
+        tools:layout="@layout/note_detail_fragment">
+        <action
+            android:id="@+id/action_noteDetail_to_editNoteFragment"
+            app:destination="@id/editNoteFragment" />
+        <argument
+            android:name="note"
+            app:argType="com.task.noteapp.features.notes.model.NotePresentation" />
+    </fragment>
+    <fragment
+        android:id="@+id/addNoteFragment"
+        android:name="com.task.noteapp.features.notes.ui.addnote.AddNoteFragment"
+        android:label="Add Note"
+        tools:layout="@layout/add_note_fragment">
+        <action
+            android:id="@+id/action_addNoteFragment_to_noteFragment"
+            app:destination="@id/noteFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editNoteFragment"
+        android:name="com.task.noteapp.features.notes.ui.editnote.EditNoteFragment"
+        android:label="Edit Note"
+        tools:layout="@layout/edit_note_fragment">
+        <action
+            android:id="@+id/action_editNoteFragment_to_noteFragment"
+            app:destination="@id/noteFragment" />
+        <argument
+            android:name="note"
+            app:argType="com.task.noteapp.features.notes.model.NotePresentation" />
+    </fragment>
+</navigation>

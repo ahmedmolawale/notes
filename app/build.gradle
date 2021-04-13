@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -52,6 +53,9 @@ dependencies {
     implementation appDependencies.fragmentKTX
     implementation appDependencies.appCompat
     implementation appDependencies.constraintLayout
+    implementation appDependencies.swipeRefereshLayout
+    implementation appDependencies.navigationFragmentKTX
+    implementation appDependencies.navigationUIKTX
 
     //Material
     implementation appDependencies.materialDesign

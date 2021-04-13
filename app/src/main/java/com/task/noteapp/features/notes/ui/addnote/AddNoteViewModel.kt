@@ -11,6 +11,7 @@ import com.task.noteapp.domain.model.Note
 import com.task.noteapp.domain.usecase.notes.SaveNote
 import com.task.noteapp.features.notes.mapper.NotePresentationMapper
 import com.task.noteapp.features.notes.model.NotePresentation
+import com.task.noteapp.features.notes.model.states.NoteView
 import com.task.noteapp.features.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -32,19 +33,22 @@ class AddNoteViewModel @Inject constructor(
     // Two-way databinding, exposing MutableLiveData
     val imageUrl = MutableLiveData<String>()
 
-    private val _savingNote = MutableLiveData<Event<Boolean>>()
-    val savingNote: LiveData<Event<Boolean>>
-        get() = _savingNote
 
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
 
+
+    private val _noteView = MutableLiveData<NoteView>()
+    val noteView: LiveData<NoteView>
+        get() = _noteView
+
+
     private fun createNote(notePresentation: NotePresentation) {
         viewModelScope.launch {
-            _savingNote.postValue(Event(true))
+            _noteView.postValue(NoteView(loading = true))
             val note: Note = notePresentationMapper.mapToDomain(notePresentation)
             saveNote(note).collect {
-                _savingNote.postValue(Event(false))
+                _noteView.postValue(NoteView(loading = false))
                 when (it) {
                     is Result.Error -> {
                         handleNoteSaveError(it.failure)
@@ -58,11 +62,11 @@ class AddNoteViewModel @Inject constructor(
     }
 
     private fun handleNoteSaveSuccess() {
-        _snackbarText.value = Event(R.string.note_saved)
+        _noteView.value = NoteView(message = R.string.note_saved)
     }
 
     private fun handleNoteSaveError(failure: Failure) {
-        _snackbarText.value = Event(R.string.note_save_error)
+        _noteView.value = NoteView(message = R.string.note_save_error)
     }
 
     //called via data-binding from the layout
