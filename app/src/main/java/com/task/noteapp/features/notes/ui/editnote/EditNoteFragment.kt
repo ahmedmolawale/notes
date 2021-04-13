@@ -48,17 +48,19 @@ class EditNoteFragment : Fragment() {
     }
 
     private fun observeChanges() {
-        editNoteViewModel.noteEditView.observe(viewLifecycleOwner, EventObserver {
-            it.message?.let { id ->
-                view?.setupSnackbar(id, Snackbar.LENGTH_SHORT)
+        editNoteViewModel.noteEditView.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                it.message?.let { id ->
+                    view?.setupSnackbar(id, Snackbar.LENGTH_SHORT)
+                }
+                it.updated?.let {
+                    val action = EditNoteFragmentDirections
+                        .actionEditNoteFragmentToNoteFragment()
+                    findNavController().navigate(action)
+                }
             }
-            it.updated?.let {
-                val action = EditNoteFragmentDirections
-                    .actionEditNoteFragmentToNoteFragment()
-                findNavController().navigate(action)
-            }
-
-        })
+        )
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -74,7 +76,6 @@ class EditNoteFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.note_edit_fragment_menu, menu)
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

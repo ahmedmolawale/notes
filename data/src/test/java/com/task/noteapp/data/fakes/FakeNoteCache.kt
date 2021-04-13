@@ -35,7 +35,6 @@ class FakeNoteCache : NoteCache {
             cache.remove(noteId)
             1
         } else 0
-
     }
 
     override suspend fun fetchNote(noteId: Long): NoteEntity? {

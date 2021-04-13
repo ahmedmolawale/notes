@@ -7,14 +7,13 @@ import com.task.noteapp.data.contract.cache.NoteCache
 import com.task.noteapp.data.model.NoteEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.util.*
+import java.util.Date
 import javax.inject.Inject
 
 class NoteCacheImpl @Inject constructor(
     private val notesDao: NotesDao,
     private val noteCacheModelMapper: NoteCacheModelMapper
 ) : NoteCache {
-
 
     override suspend fun saveNote(noteEntity: NoteEntity): Long {
         val noteCacheModel: NoteCacheModel = noteCacheModelMapper.mapToModel(noteEntity)

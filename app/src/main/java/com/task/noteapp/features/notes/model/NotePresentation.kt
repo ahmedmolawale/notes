@@ -11,4 +11,4 @@ data class NotePresentation(
     val imageUrl: String,
     val isEdited: Boolean = false,
     val dateCreated: String? = null
-): Parcelable
+) : Parcelable

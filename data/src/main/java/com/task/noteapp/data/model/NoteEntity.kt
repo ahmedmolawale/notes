@@ -1,6 +1,6 @@
 package com.task.noteapp.data.model
 
-import java.util.*
+import java.util.Date
 
 data class NoteEntity(
     val id: Long,

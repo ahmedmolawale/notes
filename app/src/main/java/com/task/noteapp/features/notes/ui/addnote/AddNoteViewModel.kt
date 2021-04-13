@@ -33,10 +33,8 @@ class AddNoteViewModel @Inject constructor(
     // Two-way databinding, exposing MutableLiveData
     val imageUrl = MutableLiveData<String>()
 
-
     private val _noteSaveView = MutableLiveData<Event<NoteSaveView>>()
     val noteSaveView: LiveData<Event<NoteSaveView>> = _noteSaveView
-
 
     private fun createNote(notePresentation: NotePresentation) {
         viewModelScope.launch {
@@ -63,7 +61,7 @@ class AddNoteViewModel @Inject constructor(
         _noteSaveView.value = Event(NoteSaveView(message = R.string.note_save_error))
     }
 
-    //called via data-binding from the layout
+    // called via data-binding from the layout
     fun saveNote() {
         val currentTitle = title.value
         val currentDescription = description.value

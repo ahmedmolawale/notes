@@ -1,6 +1,6 @@
 package com.task.noteapp.domain.model
 
-import java.util.*
+import java.util.Date
 
 data class Note(
     val id: Long,

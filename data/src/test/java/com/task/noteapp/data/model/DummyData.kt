@@ -1,7 +1,7 @@
 package com.task.noteapp.data.model
 
 import com.task.noteapp.domain.model.Note
-import java.util.*
+import java.util.Date
 
 object DummyData {
 
@@ -22,5 +22,4 @@ object DummyData {
         edited = false,
         createdAt = Date()
     )
-
 }

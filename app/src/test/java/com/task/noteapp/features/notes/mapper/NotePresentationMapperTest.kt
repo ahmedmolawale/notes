@@ -6,8 +6,7 @@ import com.task.noteapp.features.notes.data.DummyData
 import com.task.noteapp.features.notes.model.NotePresentation
 import org.junit.Test
 import java.text.SimpleDateFormat
-import java.util.*
-
+import java.util.Locale
 
 class NotePresentationMapperTest {
 

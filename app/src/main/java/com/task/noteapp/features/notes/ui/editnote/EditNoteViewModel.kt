@@ -23,7 +23,6 @@ class EditNoteViewModel @Inject constructor(
     private val notePresentationMapper: NotePresentationMapper
 ) : ViewModel() {
 
-
     val noteId = MutableLiveData<Long>()
 
     // Two-way databinding, exposing MutableLiveData
@@ -39,8 +38,7 @@ class EditNoteViewModel @Inject constructor(
     val noteEditView: LiveData<Event<NoteEditView>>
         get() = _noteUpdateView
 
-
-    //called via data-binding from the layout
+    // called via data-binding from the layout
     fun updateNote() {
         val currentNoteId = noteId.value
         val currentTitle = title.value

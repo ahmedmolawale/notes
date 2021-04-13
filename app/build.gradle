@@ -81,3 +81,4 @@ dependencies {
     testImplementation TestLibraries.coroutines
 
 }
+apply from: "../ktlint.gradle"

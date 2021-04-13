@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.task.noteapp.R
 
-
 /**
  * Transforms static java function Snackbar.make() to an extension function on View.
  */

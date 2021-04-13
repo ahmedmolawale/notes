@@ -27,7 +27,6 @@ class NoteListViewModelTest {
     private lateinit var notePresentationMapper: NotePresentationMapper
     private lateinit var getNotes: GetNotes
 
-
     @Before
     fun setup() {
         fakeNoteRepository = FakeNoteRepository()

@@ -2,7 +2,7 @@ package com.task.noteapp.cache.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.*
+import java.util.Date
 
 @Entity(tableName = "notes")
 data class NoteCacheModel(

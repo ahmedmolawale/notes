@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 class NoteListViewModel @Inject constructor(
     private val getNotes: GetNotes,
@@ -64,7 +63,7 @@ class NoteListViewModel @Inject constructor(
     /**
      * Called via Data Binding through FAB click listener.
      */
-    fun addNewNote(){
+    fun addNewNote() {
         _newNoteEvent.value = Event(Unit)
     }
 }

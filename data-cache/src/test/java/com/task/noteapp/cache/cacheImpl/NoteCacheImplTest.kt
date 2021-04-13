@@ -1,6 +1,5 @@
 package com.task.noteapp.cache.cacheImpl
 
-
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
@@ -137,5 +136,4 @@ class NoteCacheImplTest {
         }
         noteDatabase.close()
     }
-
 }

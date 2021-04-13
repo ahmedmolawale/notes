@@ -40,16 +40,19 @@ class AddNoteFragment : Fragment() {
     }
 
     private fun observeChanges() {
-        addNoteViewModel.noteSaveView.observe(viewLifecycleOwner, EventObserver {
-            it.noteSaved?.let {
-                binding.addNoteTitleEditText.setText("")
-                binding.addNoteDescriptionEditText.setText("")
-                binding.addNoteImageUrlEditText.setText("")
+        addNoteViewModel.noteSaveView.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                it.noteSaved?.let {
+                    binding.addNoteTitleEditText.setText("")
+                    binding.addNoteDescriptionEditText.setText("")
+                    binding.addNoteImageUrlEditText.setText("")
+                }
+                it.message?.let { id ->
+                    view?.setupSnackbar(id, Snackbar.LENGTH_LONG)
+                }
             }
-            it.message?.let { id ->
-                view?.setupSnackbar(id, Snackbar.LENGTH_LONG)
-            }
-        })
+        )
     }
 
     override fun onDestroyView() {

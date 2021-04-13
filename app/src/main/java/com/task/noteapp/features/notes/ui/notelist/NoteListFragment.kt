@@ -60,25 +60,31 @@ class NoteListFragment : Fragment() {
     }
 
     private fun observeChanges() {
-        noteListViewModel.newNoteEvent.observe(viewLifecycleOwner, EventObserver {
-            navigateToAddNewNote()
-        })
-        noteListViewModel.noteListView.observe(viewLifecycleOwner, {
-            if (it.isEmpty) {
-                binding.errorState.visibility = View.VISIBLE
-                binding.errorState.setCaption(getString(R.string.no_note))
-                binding.errorState.isButtonVisible = false
+        noteListViewModel.newNoteEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                navigateToAddNewNote()
             }
-            if (it.errorMessage != null) {
-                binding.errorState.visibility = View.VISIBLE
-                binding.errorState.setCaption(getString(it.errorMessage))
-                binding.errorState.isButtonVisible = true
-                binding.errorState.onRetry {
-                    binding.errorState.visibility = View.GONE
-                    noteListViewModel.fetchNotes()
+        )
+        noteListViewModel.noteListView.observe(
+            viewLifecycleOwner,
+            {
+                if (it.isEmpty) {
+                    binding.errorState.visibility = View.VISIBLE
+                    binding.errorState.setCaption(getString(R.string.no_note))
+                    binding.errorState.isButtonVisible = false
+                }
+                if (it.errorMessage != null) {
+                    binding.errorState.visibility = View.VISIBLE
+                    binding.errorState.setCaption(getString(it.errorMessage))
+                    binding.errorState.isButtonVisible = true
+                    binding.errorState.onRetry {
+                        binding.errorState.visibility = View.GONE
+                        noteListViewModel.fetchNotes()
+                    }
                 }
             }
-        })
+        )
     }
 
     private fun navigateToAddNewNote() {

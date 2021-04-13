@@ -65,21 +65,24 @@ class NoteDetailFragment : Fragment() {
     }
 
     private fun observeChanges() {
-        noteDetailViewModel.noteDetailView.observe(viewLifecycleOwner, EventObserver {
-            it.editNote?.let {
-                val action = NoteDetailFragmentDirections
-                    .actionNoteDetailToEditNoteFragment(args.note)
-                findNavController().navigate(action)
+        noteDetailViewModel.noteDetailView.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                it.editNote?.let {
+                    val action = NoteDetailFragmentDirections
+                        .actionNoteDetailToEditNoteFragment(args.note)
+                    findNavController().navigate(action)
+                }
+                it.message?.let { id ->
+                    view?.setupSnackbar(id, Snackbar.LENGTH_SHORT)
+                }
+                it.deleted?.let {
+                    val action = NoteDetailFragmentDirections
+                        .actionNoteDetailToNoteFragment()
+                    findNavController().navigate(action)
+                }
             }
-            it.message?.let { id ->
-                view?.setupSnackbar(id, Snackbar.LENGTH_SHORT)
-            }
-            it.deleted?.let {
-                val action = NoteDetailFragmentDirections
-                    .actionNoteDetailToNoteFragment()
-                findNavController().navigate(action)
-            }
-        })
+        )
     }
 
     override fun onDestroyView() {

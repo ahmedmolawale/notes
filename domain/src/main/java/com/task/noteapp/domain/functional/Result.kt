@@ -2,7 +2,6 @@ package com.task.noteapp.domain.functional
 
 import com.task.noteapp.domain.exception.Failure
 
-
 sealed class Result<out R> {
     data class Success<out T>(val data: T) : Result<T>() // Status success and data of the result
     data class Error(val failure: Failure) :

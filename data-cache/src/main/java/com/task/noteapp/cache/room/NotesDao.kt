@@ -8,7 +8,6 @@ import androidx.room.Update
 import com.task.noteapp.cache.entity.NoteCacheModel
 import kotlinx.coroutines.flow.Flow
 
-
 @Dao
 interface NotesDao {
 
@@ -26,5 +25,4 @@ interface NotesDao {
 
     @Query("DELETE FROM notes WHERE id = :noteId")
     suspend fun deleteANote(noteId: Long): Int
-
 }

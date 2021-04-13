@@ -2,7 +2,7 @@ package com.task.noteapp.features.notes.data
 
 import com.task.noteapp.domain.model.Note
 import com.task.noteapp.features.notes.model.NotePresentation
-import java.util.*
+import java.util.Date
 
 object DummyData {
 

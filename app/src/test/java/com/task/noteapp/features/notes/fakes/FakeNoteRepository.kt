@@ -63,7 +63,6 @@ class FakeNoteRepository : NoteRepository {
         }
     }
 
-
     override fun getNotes(): Flow<Result<List<Note>>> {
         return notesFlow
     }

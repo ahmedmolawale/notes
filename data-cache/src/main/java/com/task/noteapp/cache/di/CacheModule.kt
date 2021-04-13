@@ -29,7 +29,4 @@ interface CacheModule {
         @Provides
         fun provideNotesDao(noteDatabase: NoteDatabase) = noteDatabase.notesDao
     }
-
 }
-
-

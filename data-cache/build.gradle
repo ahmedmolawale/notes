@@ -44,15 +44,14 @@ dependencies {
     implementation appDependencies.hilt
     kapt appDependencies.hiltCompiler
 
-    //testImplementation TestLibraries.testCore
     testImplementation TestLibraries.archCore
     testImplementation TestLibraries.junit
     testImplementation TestLibraries.androidX
     testImplementation TestLibraries.truth
     testImplementation TestLibraries.coroutines
     testImplementation TestLibraries.room
-    //testImplementation TestLibraries.mockk
     testImplementation TestLibraries.testRunner
     testImplementation TestLibraries.robolectric
 
 }
+apply from: "../ktlint.gradle"

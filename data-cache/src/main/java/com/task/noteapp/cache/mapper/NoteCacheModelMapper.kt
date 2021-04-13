@@ -5,7 +5,7 @@ import com.task.noteapp.cache.mapper.base.CacheModelMapper
 import com.task.noteapp.data.model.NoteEntity
 import javax.inject.Inject
 
-class NoteCacheModelMapper @Inject constructor(): CacheModelMapper<NoteCacheModel, NoteEntity> {
+class NoteCacheModelMapper @Inject constructor() : CacheModelMapper<NoteCacheModel, NoteEntity> {
 
     override fun mapToModel(entity: NoteEntity): NoteCacheModel {
         return NoteCacheModel(

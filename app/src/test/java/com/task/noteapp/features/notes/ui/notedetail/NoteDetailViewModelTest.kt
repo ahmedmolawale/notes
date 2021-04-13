@@ -4,7 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.task.noteapp.R
 import com.task.noteapp.domain.usecase.notes.DeleteNote
-import com.task.noteapp.domain.usecase.notes.FetchNote
 import com.task.noteapp.features.notes.data.DummyData
 import com.task.noteapp.features.notes.fakes.FakeNoteRepository
 import com.task.noteapp.features.notes.mapper.NotePresentationMapper
