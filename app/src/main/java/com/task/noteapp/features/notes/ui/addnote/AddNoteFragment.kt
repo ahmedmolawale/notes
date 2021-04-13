@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.snackbar.Snackbar
 import com.task.noteapp.databinding.AddNoteFragmentBinding
-import com.task.noteapp.databinding.EditNoteFragmentBinding
-import com.task.noteapp.features.notes.model.NotePresentation
-import com.task.noteapp.features.notes.ui.notelist.adapter.NotesAdapter
+import com.task.noteapp.features.utils.EventObserver
+import com.task.noteapp.features.utils.setupSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -20,7 +20,6 @@ class AddNoteFragment : Fragment() {
     private var _binding: AddNoteFragmentBinding? = null
     private val binding get() = _binding!!
     private val addNoteViewModel: AddNoteViewModel by viewModels()
-    private lateinit var notesAdapter: NotesAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,13 +33,21 @@ class AddNoteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //noteListViewModel.fetchNotes()
-        //setupListAdapter()
+        observeChanges()
     }
 
-    private fun openNoteDetails(note: NotePresentation) {
+    private fun observeChanges() {
+        addNoteViewModel.noteSaveView.observe(viewLifecycleOwner, EventObserver {
+            it.noteSaved?.let {
+                binding.addNoteTitleEditText.setText("")
+                binding.addNoteDescriptionEditText.setText("")
+                binding.addNoteImageUrlEditText.setText("")
+            }
+            it.message?.let { id ->
+                view?.setupSnackbar(id, Snackbar.LENGTH_LONG)
+            }
+        })
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

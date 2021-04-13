@@ -10,7 +10,8 @@ import com.task.noteapp.domain.functional.Result
 import com.task.noteapp.domain.usecase.notes.UpdateNote
 import com.task.noteapp.features.notes.mapper.NotePresentationMapper
 import com.task.noteapp.features.notes.model.NotePresentation
-import com.task.noteapp.features.notes.model.states.NoteView
+import com.task.noteapp.features.notes.model.states.NoteEditView
+import com.task.noteapp.features.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -22,6 +23,9 @@ class EditNoteViewModel @Inject constructor(
     private val notePresentationMapper: NotePresentationMapper
 ) : ViewModel() {
 
+
+    private val noteId = MutableLiveData<Long>()
+
     // Two-way databinding, exposing MutableLiveData
     val title = MutableLiveData<String>()
 
@@ -31,23 +35,24 @@ class EditNoteViewModel @Inject constructor(
     // Two-way databinding, exposing MutableLiveData
     val imageUrl = MutableLiveData<String>()
 
-
-    private val _noteView = MutableLiveData<NoteView>()
-    val noteView: LiveData<NoteView>
-        get() = _noteView
+    private val _noteUpdateView = MutableLiveData<Event<NoteEditView>>()
+    val noteEditView: LiveData<Event<NoteEditView>>
+        get() = _noteUpdateView
 
 
     //called via data-binding from the layout
     fun updateNote() {
+        val currentNoteId = noteId.value
         val currentTitle = title.value
         val currentDescription = description.value
         val currentImageUrl = imageUrl.value
 
         if (currentTitle.isNullOrBlank() || currentDescription.isNullOrBlank()) {
-            _noteView.value = NoteView(message = R.string.no_title_description)
+            _noteUpdateView.value = Event(NoteEditView(message = R.string.no_title_description))
             return
         }
         val notePresentation = NotePresentation(
+            id = currentNoteId!!,
             title = currentTitle,
             description = currentDescription,
             imageUrl = currentImageUrl ?: ""
@@ -58,10 +63,9 @@ class EditNoteViewModel @Inject constructor(
 
     private fun updateANote(notePresentation: NotePresentation) {
         viewModelScope.launch {
-            _noteView.postValue(NoteView(loading = true))
+            _noteUpdateView.value = Event(NoteEditView(message = R.string.updating_note))
             val note = notePresentationMapper.mapToDomain(notePresentation)
             updateNote(note).collect {
-                _noteView.postValue(NoteView(loading = false))
                 when (it) {
                     is Result.Success -> {
                         handleNoteUpdateSuccess()
@@ -77,19 +81,20 @@ class EditNoteViewModel @Inject constructor(
     private fun handleNoteUpdateError(failure: Failure) {
         when (failure) {
             is Failure.NoteNotFound -> {
-                _noteView.value = NoteView(message = R.string.note_not_exist)
+                _noteUpdateView.value = Event(NoteEditView(message = R.string.note_not_exist))
             }
             else -> {
-                _noteView.value = NoteView(message = R.string.error_on_note)
+                _noteUpdateView.value = Event(NoteEditView(message = R.string.error_on_note))
             }
         }
     }
 
     private fun handleNoteUpdateSuccess() {
-        _noteView.value = NoteView(message = R.string.note_update)
+        _noteUpdateView.value = Event(NoteEditView(message = R.string.note_update, updated = true))
     }
 
     fun setNote(note: NotePresentation) {
+        noteId.value = note.id
         title.value = note.title
         description.value = note.description
         imageUrl.value = note.imageUrl

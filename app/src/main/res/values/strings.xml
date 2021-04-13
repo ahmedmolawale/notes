@@ -8,8 +8,11 @@
     <string name="error_on_note">Error on fetching data</string>
     <string name="note_update">Note updated successfully.</string>
     <string name="note_delete">Note deleted successfully.</string>
-    <string name="created_at">Created at %s</string>
+    <string name="created_at">Note created on %s</string>
     <string name="title_hint">Title</string>
     <string name="description_hint">Description</string>
     <string name="image_url_hint">Image link</string>
+    <string name="updating_note">Updating Note…</string>
+    <string name="deleting_note">Deleting note…</string>
+    <string name="saving_note">Saving Note…</string>
 </resources>

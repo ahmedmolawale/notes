@@ -43,8 +43,8 @@ class NotesAdapter(private val onClick: NoteClickListener) :
             binding.note = item
             binding.noteImage.load(item.imageUrl) {
                 crossfade(true)
-                placeholder(R.drawable.circular_shimmer_bg)
-                error(R.drawable.circular_shimmer_bg)
+                placeholder(R.drawable.ic_empty_image)
+                error(R.drawable.ic_empty_image)
             }
             binding.executePendingBindings()
         }

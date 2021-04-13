@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.task.noteapp.databinding.EditNoteFragmentBinding
-import com.task.noteapp.features.notes.model.NotePresentation
-import com.task.noteapp.features.notes.ui.addnote.AddNoteViewModel
-import com.task.noteapp.features.notes.ui.notedetail.NoteDetailFragmentArgs
-import com.task.noteapp.features.notes.ui.notelist.adapter.NotesAdapter
+import com.task.noteapp.features.utils.EventObserver
+import com.task.noteapp.features.utils.setupSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -37,7 +37,23 @@ class EditNoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         editNoteViewModel.setNote(args.note)
+        observeChanges()
     }
+
+    private fun observeChanges() {
+        editNoteViewModel.noteEditView.observe(viewLifecycleOwner, EventObserver {
+            it.message?.let { id ->
+                view?.setupSnackbar(id, Snackbar.LENGTH_SHORT)
+            }
+            it.updated?.let {
+                val action = EditNoteFragmentDirections
+                    .actionEditNoteFragmentToNoteFragment()
+                findNavController().navigate(action)
+            }
+
+        })
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

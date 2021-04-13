@@ -21,5 +21,5 @@
         <item name="cornerSize">50%</item>
     </style>
 
-    <!--    <style name="Toolbar" parent="ThemeOverlay.AppCompat.Light" />-->
+    <style name="Toolbar" parent="ThemeOverlay.MaterialComponents.Light" />
 </resources>

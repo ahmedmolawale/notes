@@ -11,7 +11,7 @@ import com.task.noteapp.domain.model.Note
 import com.task.noteapp.domain.usecase.notes.SaveNote
 import com.task.noteapp.features.notes.mapper.NotePresentationMapper
 import com.task.noteapp.features.notes.model.NotePresentation
-import com.task.noteapp.features.notes.model.states.NoteView
+import com.task.noteapp.features.notes.model.states.NoteSaveView
 import com.task.noteapp.features.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -34,21 +34,15 @@ class AddNoteViewModel @Inject constructor(
     val imageUrl = MutableLiveData<String>()
 
 
-    private val _snackbarText = MutableLiveData<Event<Int>>()
-    val snackbarText: LiveData<Event<Int>> = _snackbarText
-
-
-    private val _noteView = MutableLiveData<NoteView>()
-    val noteView: LiveData<NoteView>
-        get() = _noteView
+    private val _noteSaveView = MutableLiveData<Event<NoteSaveView>>()
+    val noteSaveView: LiveData<Event<NoteSaveView>> = _noteSaveView
 
 
     private fun createNote(notePresentation: NotePresentation) {
         viewModelScope.launch {
-            _noteView.postValue(NoteView(loading = true))
+            _noteSaveView.value = Event(NoteSaveView(message = R.string.saving_note))
             val note: Note = notePresentationMapper.mapToDomain(notePresentation)
             saveNote(note).collect {
-                _noteView.postValue(NoteView(loading = false))
                 when (it) {
                     is Result.Error -> {
                         handleNoteSaveError(it.failure)
@@ -62,11 +56,11 @@ class AddNoteViewModel @Inject constructor(
     }
 
     private fun handleNoteSaveSuccess() {
-        _noteView.value = NoteView(message = R.string.note_saved)
+        _noteSaveView.value = Event(NoteSaveView(message = R.string.note_saved, noteSaved = true))
     }
 
     private fun handleNoteSaveError(failure: Failure) {
-        _noteView.value = NoteView(message = R.string.note_save_error)
+        _noteSaveView.value = Event(NoteSaveView(message = R.string.note_save_error))
     }
 
     //called via data-binding from the layout
@@ -76,7 +70,7 @@ class AddNoteViewModel @Inject constructor(
         val currentImageUrl = imageUrl.value
 
         if (currentTitle.isNullOrBlank() || currentDescription.isNullOrBlank()) {
-            _snackbarText.value = Event(R.string.no_title_description)
+            _noteSaveView.value = Event(NoteSaveView(message = R.string.no_title_description))
             return
         }
         val notePresentation = NotePresentation(

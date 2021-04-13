@@ -8,9 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.task.noteapp.databinding.NoteDetailFragmentBinding
-import com.task.noteapp.features.notes.ui.notelist.adapter.NotesAdapter
 import com.task.noteapp.features.utils.EventObserver
+import com.task.noteapp.features.utils.setupSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -36,14 +37,24 @@ class NoteDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         noteDetailViewModel.setNote(args.note)
-        setupNavigation()
+        observeChanges()
     }
 
-    private fun setupNavigation() {
-        noteDetailViewModel.editNoteEvent.observe(viewLifecycleOwner, EventObserver {
-            val action = NoteDetailFragmentDirections
-                .actionNoteDetailToEditNoteFragment(args.note)
-            findNavController().navigate(action)
+    private fun observeChanges() {
+        noteDetailViewModel.noteDetailView.observe(viewLifecycleOwner, EventObserver {
+            it.editNote?.let {
+                val action = NoteDetailFragmentDirections
+                    .actionNoteDetailToEditNoteFragment(args.note)
+                findNavController().navigate(action)
+            }
+            it.message?.let { id ->
+                view?.setupSnackbar(id, Snackbar.LENGTH_SHORT)
+            }
+            it.deleted?.let {
+                val action = NoteDetailFragmentDirections
+                    .actionNoteDetailToNoteFragment()
+                findNavController().navigate(action)
+            }
         })
     }
 

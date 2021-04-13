@@ -27,7 +27,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearance="@style/ShapeAppearance.App.CircleImageView"
-            app:srcCompat="@drawable/circular_shimmer_bg" />
+            app:srcCompat="@drawable/ic_empty_image" />
 
         <TextView
             android:id="@+id/title"
@@ -35,23 +35,35 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/circularstdmedium"
             android:text="@{note.title}"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@id/description"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/edited"
             app:layout_constraintStart_toEndOf="@id/note_image"
             app:layout_constraintTop_toTopOf="@id/note_image"
             tools:text="Olawale A." />
+
+        <ImageButton
+            android:id="@+id/edited"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/ic_edited"
+            android:visibility="@{note.edited ? View.VISIBLE : View.GONE, default=gone}"
+            app:layout_constraintBottom_toBottomOf="@id/title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/title" />
 
         <TextView
             android:id="@+id/description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:fontFamily="@font/circularstdbook"
             android:maxLines="2"
@@ -59,7 +71,6 @@
             android:textAllCaps="false"
             android:textColor="@color/light_grey"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@id/note_image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/note_image"
             app:layout_constraintTop_toBottomOf="@id/title"
@@ -69,12 +80,12 @@
             android:id="@+id/created_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/circularstdmedium"
-            android:text="@{@string/created_at(note.dateCreated)}"
+            android:text="@{note.dateCreated}"
             android:textAllCaps="false"
-            android:textColor="@color/blue"
-            android:textSize="14sp"
-            android:textStyle="italic"
+            android:textColor="@color/light_grey"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/description"
             app:layout_constraintTop_toBottomOf="@id/description"
