@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.task.noteapp.R
 import com.task.noteapp.databinding.NoteFragmentBinding
 import com.task.noteapp.features.notes.model.NotePresentation
+import com.task.noteapp.features.notes.ui.MainActivity
 import com.task.noteapp.features.notes.ui.notelist.adapter.NotesAdapter
 import com.task.noteapp.features.utils.EventObserver
 import com.task.noteapp.features.utils.initRecyclerViewWithLineDecoration
@@ -37,8 +39,9 @@ class NoteListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         noteListViewModel.fetchNotes()
+        (activity as MainActivity).supportActionBar?.title = getString(R.string.notes)
         setupListAdapter()
-        setupNavigation()
+        observeChanges()
     }
 
     private fun openNoteDetails(note: NotePresentation) {
@@ -56,9 +59,25 @@ class NoteListFragment : Fragment() {
         binding.noteList.adapter = notesAdapter
     }
 
-    private fun setupNavigation() {
+    private fun observeChanges() {
         noteListViewModel.newNoteEvent.observe(viewLifecycleOwner, EventObserver {
             navigateToAddNewNote()
+        })
+        noteListViewModel.noteListView.observe(viewLifecycleOwner, {
+            if (it.isEmpty) {
+                binding.errorState.visibility = View.VISIBLE
+                binding.errorState.setCaption(getString(R.string.no_note))
+                binding.errorState.isButtonVisible = false
+            }
+            if (it.errorMessage != null) {
+                binding.errorState.visibility = View.VISIBLE
+                binding.errorState.setCaption(getString(it.errorMessage))
+                binding.errorState.isButtonVisible = true
+                binding.errorState.onRetry {
+                    binding.errorState.visibility = View.GONE
+                    noteListViewModel.fetchNotes()
+                }
+            }
         })
     }
 

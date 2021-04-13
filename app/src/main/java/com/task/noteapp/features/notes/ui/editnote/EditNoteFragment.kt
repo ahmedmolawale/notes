@@ -2,6 +2,9 @@ package com.task.noteapp.features.notes.ui.editnote
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -9,7 +12,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
+import com.task.noteapp.R
 import com.task.noteapp.databinding.EditNoteFragmentBinding
+import com.task.noteapp.features.notes.ui.MainActivity
 import com.task.noteapp.features.utils.EventObserver
 import com.task.noteapp.features.utils.setupSnackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,12 +36,14 @@ class EditNoteFragment : Fragment() {
         _binding = EditNoteFragmentBinding.inflate(inflater, container, false)
         binding.viewmodel = editNoteViewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        setHasOptionsMenu(true)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         editNoteViewModel.setNote(args.note)
+        (activity as MainActivity).supportActionBar?.title = getString(R.string.menu_edit_note)
         observeChanges()
     }
 
@@ -52,6 +59,20 @@ class EditNoteFragment : Fragment() {
             }
 
         })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_update -> {
+                editNoteViewModel.updateNote()
+                true
+            }
+            else -> false
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.note_edit_fragment_menu, menu)
     }
 
 

@@ -32,41 +32,8 @@ class NoteDetailViewModelTest {
         notePresentationMapper = NotePresentationMapper()
         noteDetailViewModel =
             NoteDetailViewModel(
-                DeleteNote(fakeNoteRepository),
-                FetchNote(fakeNoteRepository),
-                notePresentationMapper
+                DeleteNote(fakeNoteRepository)
             )
-    }
-
-    @Test
-    fun `check that fetchNote returns the correct data`() {
-        fakeNoteRepository.noteResponseType = ResponseType.DATA
-        noteDetailViewModel.getNote(DummyData.note.id)
-
-        val res = noteDetailViewModel.noteView.getOrAwaitValueTest()
-        assertThat(res.note).isNotNull()
-        assertThat(res.note)
-            .isEqualTo(notePresentationMapper.mapToPresentation(DummyData.note))
-    }
-
-    @Test
-    fun `check that fetchNote returns not exist when note does not exist`() {
-        fakeNoteRepository.noteResponseType = ResponseType.RESOURCE_NOT_FOUND
-        noteDetailViewModel.getNote(DummyData.note.id)
-
-        val res = noteDetailViewModel.noteView.getOrAwaitValueTest()
-        assertThat(res.note).isNull()
-        assertThat(res.message).isEqualTo(R.string.note_not_exist)
-    }
-
-    @Test
-    fun `check that fetchNote returns error if error happens`() {
-        fakeNoteRepository.noteResponseType = ResponseType.ERROR
-        noteDetailViewModel.getNote(DummyData.note.id)
-
-        val res = noteDetailViewModel.noteView.getOrAwaitValueTest()
-        assertThat(res.note).isNull()
-        assertThat(res.message).isEqualTo(R.string.error_on_note)
     }
 
     @Test
@@ -74,8 +41,8 @@ class NoteDetailViewModelTest {
         fakeNoteRepository.longResponseType = ResponseType.DATA
         noteDetailViewModel.deleteANote(DummyData.note.id)
 
-        val res = noteDetailViewModel.noteView.getOrAwaitValueTest()
-        assertThat(res.message).isEqualTo(R.string.note_delete)
+        val res = noteDetailViewModel.noteDetailView.getOrAwaitValueTest()
+        assertThat(res.peekContent().message).isEqualTo(R.string.note_delete)
     }
 
     @Test
@@ -83,9 +50,9 @@ class NoteDetailViewModelTest {
         fakeNoteRepository.longResponseType = ResponseType.RESOURCE_NOT_FOUND
         noteDetailViewModel.deleteANote(DummyData.note.id)
 
-        val res = noteDetailViewModel.noteView.getOrAwaitValueTest()
-        assertThat(res.note).isNull()
-        assertThat(res.message).isEqualTo(R.string.note_not_exist)
+        val res = noteDetailViewModel.noteDetailView.getOrAwaitValueTest()
+        assertThat(res).isNotNull()
+        assertThat(res.peekContent().message).isEqualTo(R.string.note_not_exist)
     }
 
     @Test
@@ -93,8 +60,8 @@ class NoteDetailViewModelTest {
         fakeNoteRepository.longResponseType = ResponseType.ERROR
         noteDetailViewModel.deleteANote(DummyData.note.id)
 
-        val res = noteDetailViewModel.noteView.getOrAwaitValueTest()
-        assertThat(res.note).isNull()
-        assertThat(res.message).isEqualTo(R.string.error_on_note)
+        val res = noteDetailViewModel.noteDetailView.getOrAwaitValueTest()
+        assertThat(res).isNotNull()
+        assertThat(res.peekContent().message).isEqualTo(R.string.error_on_note)
     }
 }

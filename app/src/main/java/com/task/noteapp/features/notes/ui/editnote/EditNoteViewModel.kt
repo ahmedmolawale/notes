@@ -24,7 +24,7 @@ class EditNoteViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private val noteId = MutableLiveData<Long>()
+    val noteId = MutableLiveData<Long>()
 
     // Two-way databinding, exposing MutableLiveData
     val title = MutableLiveData<String>()
@@ -57,7 +57,6 @@ class EditNoteViewModel @Inject constructor(
             description = currentDescription,
             imageUrl = currentImageUrl ?: ""
         )
-        print("Updating...")
         updateANote(notePresentation)
     }
 

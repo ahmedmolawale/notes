@@ -8,8 +8,6 @@ import com.task.noteapp.R
 import com.task.noteapp.domain.exception.Failure
 import com.task.noteapp.domain.functional.Result
 import com.task.noteapp.domain.usecase.notes.DeleteNote
-import com.task.noteapp.domain.usecase.notes.FetchNote
-import com.task.noteapp.features.notes.mapper.NotePresentationMapper
 import com.task.noteapp.features.notes.model.NotePresentation
 import com.task.noteapp.features.notes.model.states.NoteDetailView
 import com.task.noteapp.features.utils.Event
@@ -20,9 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoteDetailViewModel @Inject constructor(
-    private val deleteNote: DeleteNote,
-    private val fetchNote: FetchNote,
-    private val notePresentationMapper: NotePresentationMapper
+    private val deleteNote: DeleteNote
 ) : ViewModel() {
 
     private val _note = MutableLiveData<NotePresentation>()
@@ -60,7 +56,8 @@ class NoteDetailViewModel @Inject constructor(
     }
 
     private fun handleNoteDeleteSuccess() {
-        _noteDetailView.value = Event(NoteDetailView(message = R.string.note_delete))
+        _noteDetailView.value =
+            Event(NoteDetailView(message = R.string.note_delete, deleted = true))
     }
 
     fun setNote(note: NotePresentation) {

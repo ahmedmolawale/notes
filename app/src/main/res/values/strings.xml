@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NoteApp</string>
+    <string name="app_name">Notes</string>
     <string name="note_saved">Note saved successfully.</string>
     <string name="note_save_error">Unable to save note. Try again</string>
     <string name="no_title_description">Title and Description cannot be empty</string>
@@ -15,4 +15,15 @@
     <string name="updating_note">Updating Note…</string>
     <string name="deleting_note">Deleting note…</string>
     <string name="saving_note">Saving Note…</string>
+    <string name="menu_delete_note">Delete Note</string>
+    <string name="menu_edit_note">Edit Note</string>
+    <string name="menu_update">Update Note</string>
+    <string name="note_details">Note Details</string>
+    <string name="notes">Notes</string>
+    <string name="new_note">New Note</string>
+
+    <string name="empty_state_icon">Empty state icon</string>
+    <string name="an_error_occurred">An error occurred</string>
+    <string name="retry">Retry</string>
+    <string name="no_note">No notes has been saved yet. Try adding one</string>
 </resources>

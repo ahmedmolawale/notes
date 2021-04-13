@@ -24,59 +24,65 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingBottom="@dimen/activity_vertical_margin">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/refresh_layout"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_view_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:visibility="@{noteViewModel.noteListView.loading ? View.VISIBLE : View.GONE, default=visible}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shimmer_auto_start="true"
+                app:shimmer_highlight_color="@color/stroke_color">
 
-                <com.facebook.shimmer.ShimmerFrameLayout
-                    android:id="@+id/shimmer_view_container"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="@{noteViewModel.noteListView.loading ? View.VISIBLE : View.GONE, default=visible}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:shimmer_auto_start="true"
-                    app:shimmer_highlight_color="@color/stroke_color">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
+                    <include layout="@layout/note_item_shimmer" />
 
-                        <include layout="@layout/note_item_shimmer" />
+                    <include layout="@layout/note_item_shimmer" />
 
-                        <include layout="@layout/note_item_shimmer" />
+                    <include layout="@layout/note_item_shimmer" />
 
-                        <include layout="@layout/note_item_shimmer" />
+                    <include layout="@layout/note_item_shimmer" />
 
-                        <include layout="@layout/note_item_shimmer" />
+                    <include layout="@layout/note_item_shimmer" />
 
-                        <include layout="@layout/note_item_shimmer" />
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
-                    </LinearLayout>
-                </com.facebook.shimmer.ShimmerFrameLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/note_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{noteViewModel.noteListView.notes != null ? View.VISIBLE : View.GONE, default=gone}"
+                app:items="@{noteViewModel.noteListView.notes}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:listitem="@layout/note_item" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/note_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="@{noteViewModel.noteListView.notes != null ? View.VISIBLE : View.GONE, default=gone}"
-                    app:items="@{noteViewModel.noteListView.notes}"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:listitem="@layout/note_item" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <com.task.noteapp.features.notes.ui.EmptyStateView
+                android:id="@+id/error_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:isButtonVisible="true"
+                app:emptyStateImageSrc="@drawable/error_image"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_note_fab"
@@ -86,7 +92,7 @@
             android:onClick="@{() -> noteViewModel.addNewNote()}"
             android:src="@drawable/ic_add"
             app:fabSize="normal"
-            app:layout_anchor="@id/refresh_layout"
+            app:layout_anchor="@id/main"
             app:layout_anchorGravity="bottom|right|end" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

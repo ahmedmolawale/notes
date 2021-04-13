@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
+import com.task.noteapp.R
 import com.task.noteapp.databinding.AddNoteFragmentBinding
+import com.task.noteapp.features.notes.ui.MainActivity
 import com.task.noteapp.features.utils.EventObserver
 import com.task.noteapp.features.utils.setupSnackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,6 +35,7 @@ class AddNoteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).supportActionBar?.title = getString(R.string.new_note)
         observeChanges()
     }
 

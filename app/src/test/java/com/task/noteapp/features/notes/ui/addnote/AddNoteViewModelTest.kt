@@ -4,8 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.task.noteapp.R
 import com.task.noteapp.domain.usecase.notes.SaveNote
-import com.task.noteapp.domain.usecase.notes.UpdateNote
-import com.task.noteapp.features.notes.data.DummyData
 import com.task.noteapp.features.notes.fakes.FakeNoteRepository
 import com.task.noteapp.features.notes.mapper.NotePresentationMapper
 import com.task.noteapp.features.utils.MainCoroutineRule
@@ -37,18 +35,18 @@ class AddNoteViewModelTest {
     fun `check that saveNote fails when title is not available`() {
         addNoteViewModel.title.value = ""
         addNoteViewModel.saveNote()
-        val res = addNoteViewModel.snackbarText.getOrAwaitValueTest()
+        val res = addNoteViewModel.noteSaveView.getOrAwaitValueTest()
         assertThat(res.peekContent()).isNotNull()
-        assertThat(res.peekContent()).isEqualTo(R.string.no_title_description)
+        assertThat(res.peekContent().message).isEqualTo(R.string.no_title_description)
     }
 
     @Test
     fun `check that saveNote fails when description is not available`() {
         addNoteViewModel.description.value = ""
         addNoteViewModel.saveNote()
-        val res = addNoteViewModel.snackbarText.getOrAwaitValueTest()
+        val res = addNoteViewModel.noteSaveView.getOrAwaitValueTest()
         assertThat(res.peekContent()).isNotNull()
-        assertThat(res.peekContent()).isEqualTo(R.string.no_title_description)
+        assertThat(res.peekContent().message).isEqualTo(R.string.no_title_description)
     }
 
     @Test
@@ -58,9 +56,9 @@ class AddNoteViewModelTest {
         fakeNoteRepository.noteResponseType = ResponseType.DATA
 
         addNoteViewModel.saveNote()
-        val res = addNoteViewModel.snackbarText.getOrAwaitValueTest()
+        val res = addNoteViewModel.noteSaveView.getOrAwaitValueTest()
         assertThat(res.peekContent()).isNotNull()
-        assertThat(res.peekContent()).isEqualTo(R.string.note_saved)
+        assertThat(res.peekContent().message).isEqualTo(R.string.note_saved)
     }
 
     @Test
@@ -70,8 +68,8 @@ class AddNoteViewModelTest {
         fakeNoteRepository.noteResponseType = ResponseType.ERROR
 
         addNoteViewModel.saveNote()
-        val res = addNoteViewModel.snackbarText.getOrAwaitValueTest()
+        val res = addNoteViewModel.noteSaveView.getOrAwaitValueTest()
         assertThat(res.peekContent()).isNotNull()
-        assertThat(res.peekContent()).isEqualTo(R.string.note_save_error)
+        assertThat(res.peekContent().message).isEqualTo(R.string.note_save_error)
     }
 }
