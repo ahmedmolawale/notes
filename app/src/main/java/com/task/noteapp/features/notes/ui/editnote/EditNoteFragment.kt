@@ -55,9 +55,7 @@ class EditNoteFragment : Fragment() {
                     view?.setupSnackbar(id, Snackbar.LENGTH_SHORT)
                 }
                 it.updated?.let {
-                    val action = EditNoteFragmentDirections
-                        .actionEditNoteFragmentToNoteFragment()
-                    findNavController().navigate(action)
+                    findNavController().popBackStack(R.id.noteFragment, false)
                 }
             }
         )

@@ -77,9 +77,7 @@ class NoteDetailFragment : Fragment() {
                     view?.setupSnackbar(id, Snackbar.LENGTH_SHORT)
                 }
                 it.deleted?.let {
-                    val action = NoteDetailFragmentDirections
-                        .actionNoteDetailToNoteFragment()
-                    findNavController().navigate(action)
+                    findNavController().popBackStack(R.id.noteFragment, false)
                 }
             }
         )
