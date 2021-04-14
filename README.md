@@ -1,5 +1,7 @@
 # NoteApp
 
+Hi there, check out my thought process here [file](https://github.com/getir-android/Olawale/blob/main/process.md)
+
 ### Deadline
 
 We'll be waiting for your solution within 4 days.
