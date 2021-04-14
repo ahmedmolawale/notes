@@ -12,7 +12,6 @@ I learnt from them.
 - [Architecture](#architecture)
 - [Libraries](#libraries)
 - [Testing](#testing)
-- [Organisation](#organisation)
 - [Demo](#demo)
 
 
